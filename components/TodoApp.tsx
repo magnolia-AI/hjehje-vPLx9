@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Task } from '@/types';
+import { Task } from '@prisma/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -9,24 +9,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, MoreVertical } from 'lucide-react';
 
-const initialTasks: Task[] = [
-  { id: '1', text: 'Learn Next.js', completed: true, priority: 'high' },
-  { id: '2', text: 'Build a todo app', completed: false, priority: 'medium' },
-  { id: '3', text: 'Deploy to Vercel', completed: false, priority: 'low' },
-];
-
-export default function TodoApp() {
+export default function TodoApp({ initialTasks }: { initialTasks: Task[] }) {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [newTaskText, setNewTaskText] = useState('');
 
   const handleAddTask = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTaskText.trim()) return;
+    // This will be replaced with a server action
     const newTask: Task = {
       id: Date.now().toString(),
-      text: newTaskText,
+      title: newTaskText,
       completed: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
       priority: 'medium',
+      dueDate: null,
     };
     setTasks([...tasks, newTask]);
     setNewTaskText('');
@@ -56,7 +54,7 @@ export default function TodoApp() {
                 setTasks(tasks.map(t => t.id === task.id ? { ...t, completed: !t.completed } : t));
               }} />
               <span className={`flex-grow ${task.completed ? 'line-through text-muted-foreground' : ''}`}>
-                {task.text}
+                {task.title}
               </span>
               <Button variant="ghost" size="icon">
                 <MoreVertical className="h-4 w-4" />
