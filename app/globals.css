@@ -2,15 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
-  TEMPLATE NOTE:
-  These are template color variables. Feel free to:
-  - Change any color values
-  - Add new variables
-  - Use a different color scheme entirely
-  - Modify the dark mode theme
-*/
-
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -79,3 +70,21 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.552 0.016 285.938);
 }
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .checkbox-decorator {
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary transition-transform transform scale-0;
+  }
+
+  .checkbox-checked .checkbox-decorator {
+    @apply scale-100;
+  }
+}
+
