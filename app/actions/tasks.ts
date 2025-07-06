@@ -3,6 +3,15 @@
 import { revalidatePath } from 'next/cache';
 import prisma from '@/lib/prisma';
 
+
+export async function getTasks() {
+  return prisma.task.findMany({
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
+}
+
 // Add task server action
 export async function addTask(title: string) {
   try {
@@ -26,4 +35,5 @@ export async function deleteTask(id: string) {
     return { success: false, error: 'Failed to delete task' };
   }
 }
+
 
